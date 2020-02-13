@@ -22,15 +22,15 @@ def start(squareSize):
 def drawBoard(board, size):
 	root = tk.Tk()
 	
-	screen_height = root.winfo_screenheight()
+	screenHeight = root.winfo_screenheight()
 	
 	turtle.title("Board")			#sets the title of the turtle window
-	turtle.setup(screen_height,screen_height,0,0)		#sets the initial size of the turtle window
+	turtle.setup(screenHeight,screenHeight,0,0)		#sets the initial size of the turtle window
 	turtle.ht()
 	
 	
 	
-	square = round(1000/size)		#length of each square, including width of one border
+	square = round((screenHeight-100)/size)		#length of each square, including width of one border
 	border = square*size+1			#the length of the entire border, including the width of each border
 	
 	
