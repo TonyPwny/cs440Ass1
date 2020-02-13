@@ -1,4 +1,5 @@
 import turtle
+import tkinter as tk
 
 #function to lift the pen, moves the turtle cursor to the top left corner, and sets the pen back down
 def corner(borderSize):
@@ -19,8 +20,12 @@ def start(squareSize):
 
 #function to draw the board
 def drawBoard(board, size):
+	root = tk.Tk()
+	
+	screen_height = root.winfo_screenheight()
+	
 	turtle.title("Board")			#sets the title of the turtle window
-	turtle.setup(1080,1080,0,0)		#sets the initial size of the turtle window
+	turtle.setup(screen_height,screen_height,0,0)		#sets the initial size of the turtle window
 	turtle.ht()
 	
 	
