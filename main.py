@@ -1,5 +1,6 @@
 import board				# import code for creating the board
 import draw					# import code for visually displaying the board on screen
+import bfirst
 
 def main():
 	gameBoard = board.Board()											# builds a Board() object and assigns it to gameBoard
@@ -7,6 +8,8 @@ def main():
 	
 	input("Initial game board displayed.")
 	draw.turtle.clear()
+	
+	bfirst.BreadthFirst(gameBoard.boardBuilt, gameBoard.boardSize)
 #
 
 
