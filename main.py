@@ -4,13 +4,15 @@ import bfirst
 
 def main():
 	gameBoard = board.Board()											# builds a Board() object and assigns it to gameBoard
+	
 	draw.drawBoard(gameBoard.boardBuilt, gameBoard.boardSize)			# takes the created board and draws it with turtle, as visual output
-	
-	input("Initial game board displayed.")
-	draw.turtle.clear()
-	
-	path = bfirst.bfs(gameBoard.boardBuilt, gameBoard.boardSize, (0,5))
+	path, visited = bfirst.bfs(gameBoard.boardBuilt, gameBoard.boardSize, (0,0))
 	print(path)
+	input("Initial game board displayed.")
+	
+	
+	draw.drawBoard(visited, gameBoard.boardSize)
+	input("Visited tiles displayed.")
 #
 
 
