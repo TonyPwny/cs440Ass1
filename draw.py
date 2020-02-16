@@ -20,6 +20,8 @@ def start(squareSize):
 
 #function to draw the board
 def drawBoard(board, size):
+	turtle.clear()
+	
 	root = tk.Tk()
 	screenHeight = root.winfo_screenheight()		#create a tk object to grab the screen height
 	

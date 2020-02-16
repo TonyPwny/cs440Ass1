@@ -9,7 +9,8 @@ def main():
 	input("Initial game board displayed.")
 	draw.turtle.clear()
 	
-	bfirst.BreadthFirst(gameBoard.boardBuilt, gameBoard.boardSize)
+	path = bfirst.bfs(gameBoard.boardBuilt, gameBoard.boardSize, (0,5))
+	print(path)
 #
 
 
