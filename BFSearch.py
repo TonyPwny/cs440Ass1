@@ -4,13 +4,14 @@
 from queue import Queue
 
 class BFSearch():
+
     def __init__(self, board, size):
+        self.visited = [['N' for i in range(size)] for j in range(size)]
+        self.steps = [['X' for i in range(size)] for j in range(size)]
+
         q = Queue()
         v = set()
         depth = 0
-
-        self.visited = [['N' for i in range(size)] for j in range(size)]
-        self.steps = [['X' for i in range(size)] for j in range(size)]
 
         q.put((0, 0, depth))
         v.add((0, 0))
@@ -26,3 +27,12 @@ class BFSearch():
                 if (0 <= i_2 < size) and (0 <= j_2 < size) and ((i_2, j_2) not in v):
                     q.put((i_2, j_2, self.steps[i][j] + 1))
                     v.add((i_2, j_2))
+
+
+        if self.visited[size - 1][size - 1] != 'N':
+            self.value = self.steps[size - 1][size - 1]
+        else:
+            k = 0
+            for n in self.visited:
+                k -= n.count('N')
+            self.value = k

@@ -12,6 +12,13 @@ def mainAT():
 
 	x = 0
 	while x == 0:
+
+		print("Randomly generated puzzle value: " + str(bfs.value))
+
+		if bfs.value <= 0:
+			print("This puzzle is UNSOLVABLE")
+
+		
 		userInput = raw_input("Type '1' for the puzzle board, '2' for the move depth of each position, '3' for the visited position matrix, 'q' to exit. ")
 
 		if userInput == '1':
