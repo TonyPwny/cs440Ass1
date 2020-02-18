@@ -3,7 +3,7 @@
 
 from queue import Queue
 
-class BFSearch():
+class evaluate():
 
     def __init__(self, board, size):
         self.visited = [['N' for i in range(size)] for j in range(size)]
@@ -36,3 +36,10 @@ class BFSearch():
             for n in self.visited:
                 k -= n.count('N')
             self.value = k
+
+    def mutate(self, board, size):
+        eval = evaluate(board, size)
+        newBoard = list(board)
+        newBoard[0][0] = 1
+
+        return newBoard

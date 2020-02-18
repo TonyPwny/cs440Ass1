@@ -3,44 +3,43 @@
 
 import board				# import code for creating the board
 import draw					# import code for visually displaying the board on screen
-import BFSearch
-import HillClimb
+import evaluate
 
 def mainAT():
-	gameBoard = board.Board()											# builds a Board() object and assigns it to gameBoard
+	puzzle = board.Board()											# builds a Board() object and assigns it to puzzle
 
-	bfs = BFSearch.BFSearch(gameBoard.boardBuilt, gameBoard.boardSize)		# creates the bfs object
+	eval = evaluate.evaluate(puzzle.boardBuilt, puzzle.boardSize)		# creates the evaluate object
 
 	x = 0
 	while x == 0:
 
-		print("Randomly generated puzzle value: " + str(bfs.value))
+		print("Randomly generated puzzle value: " + str(eval.value))
 
-		if bfs.value <= 0:
+		if eval.value <= 0:
 			print("This puzzle is UNSOLVABLE")
 
 
 		userInput = raw_input("Type '1' for the puzzle board, '2' for the move depth of each position, '3' for the visited position matrix, '4' for a HillClimb mutation, 'q' to exit. ")
 
 		if userInput == '1':
-			draw.drawBoard(gameBoard.boardBuilt, gameBoard.boardSize)			# takes the created board and draws it with turtle, as visual output
-			print("> Initial game board displayed.")
+			draw.drawBoard(puzzle.boardBuilt, puzzle.boardSize)			# takes the created board and draws it with turtle, as visual output
+			print("> Initial puzzle displayed.")
 			print()
 
 		elif userInput == '2':
-			draw.drawBoard(bfs.steps, gameBoard.boardSize)
+			draw.drawBoard(eval.steps, puzzle.boardSize)
 			print("> Number of steps to reach a position displayed.")
 			print()
 
 		elif userInput == '3':
-			draw.drawBoard(bfs.visited, gameBoard.boardSize)
+			draw.drawBoard(eval.visited, puzzle.boardSize)
 			print("> Visited tiles displayed.")
 			print()
 
 		elif userInput == '4':
-			hc = HillClimb.HillClimb(gameBoard.boardBuilt, gameBoard.boardSize)
-			gameBoard.boardBuilt = hc.mutate
-			bfs = BFSearch.BFSearch(gameBoard.boardBuilt, gameBoard.boardSize)
+			newPuzzle = eval.mutate(puzzle.boardBuilt, puzzle.boardSize)
+			eval = evaluate.evaluate(newPuzzle, puzzle.boardSize)
+			draw.drawBoard(newPuzzle, puzzle.boardSize)
 			print("> HillClimb mutation.")
 			print()
 
