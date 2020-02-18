@@ -9,6 +9,7 @@ def mainAT():
 	gameBoard = board.Board()											# builds a Board() object and assigns it to gameBoard
 
 	bfs = BFSearch.BFSearch(gameBoard.boardBuilt, gameBoard.boardSize)		# creates the bfs object
+	hc = HillClimb.HillClimb(gameBoard.boardBuilt, gameBoard.boardSize)
 
 	x = 0
 	while x == 0:
@@ -18,7 +19,7 @@ def mainAT():
 		if bfs.value <= 0:
 			print("This puzzle is UNSOLVABLE")
 
-		
+
 		userInput = raw_input("Type '1' for the puzzle board, '2' for the move depth of each position, '3' for the visited position matrix, 'q' to exit. ")
 
 		if userInput == '1':
@@ -34,6 +35,11 @@ def mainAT():
 		elif userInput == '3':
 			draw.drawBoard(bfs.visited, gameBoard.boardSize)
 			print("> Visited tiles displayed.")
+			print()
+
+		elif userInput == '4':
+			gameBoard = hc.mutation
+			print("> HillClimb mutation.")
 			print()
 
 		elif userInput.lower() == 'q':
