@@ -4,12 +4,12 @@
 import board				# import code for creating the board
 import draw					# import code for visually displaying the board on screen
 import BFSearch
+import HillClimb
 
 def mainAT():
 	gameBoard = board.Board()											# builds a Board() object and assigns it to gameBoard
 
 	bfs = BFSearch.BFSearch(gameBoard.boardBuilt, gameBoard.boardSize)		# creates the bfs object
-	hc = HillClimb.HillClimb(gameBoard.boardBuilt, gameBoard.boardSize)
 
 	x = 0
 	while x == 0:
@@ -20,7 +20,7 @@ def mainAT():
 			print("This puzzle is UNSOLVABLE")
 
 
-		userInput = raw_input("Type '1' for the puzzle board, '2' for the move depth of each position, '3' for the visited position matrix, 'q' to exit. ")
+		userInput = raw_input("Type '1' for the puzzle board, '2' for the move depth of each position, '3' for the visited position matrix, '4' for a HillClimb mutation, 'q' to exit. ")
 
 		if userInput == '1':
 			draw.drawBoard(gameBoard.boardBuilt, gameBoard.boardSize)			# takes the created board and draws it with turtle, as visual output
@@ -38,7 +38,9 @@ def mainAT():
 			print()
 
 		elif userInput == '4':
-			gameBoard = hc.mutation
+			hc = HillClimb.HillClimb(gameBoard.boardBuilt, gameBoard.boardSize)
+			gameBoard.boardBuilt = hc.mutate
+			bfs = BFSearch.BFSearch(gameBoard.boardBuilt, gameBoard.boardSize)
 			print("> HillClimb mutation.")
 			print()
 
