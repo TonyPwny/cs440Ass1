@@ -3,6 +3,8 @@
 
 import board				# import code for creating the board
 import draw					# import code for visually displaying the board on screen
+import copy
+import random
 import evaluate
 
 def mainAT():
@@ -13,8 +15,8 @@ def mainAT():
 	x = 0
 	while x == 0:
 
-		print("Randomly generated puzzle value: " + str(eval.value))
-
+		print("Puzzle difficulty score: " + str(eval.value))
+ 
 		if eval.value <= 0:
 			print("This puzzle is UNSOLVABLE")
 
@@ -37,9 +39,55 @@ def mainAT():
 			print()
 
 		elif userInput == '4':
-			newPuzzle = eval.mutate(puzzle.boardBuilt, puzzle.boardSize)
-			eval = evaluate.evaluate(newPuzzle, puzzle.boardSize)
-			draw.drawBoard(newPuzzle, puzzle.boardSize)
+
+			userInputHC = raw_input("Enter number of iterations to run hill climbing mutation: ")
+
+			iterations = int(userInputHC)
+
+			n_max = puzzle.boardSize - 1
+			newPuzzle = copy.deepcopy(puzzle)
+			count = 1
+
+			while iterations > 0:
+				print('Iteration: ' + str(count))
+				eval1 = evaluate.evaluate(puzzle.boardBuilt, puzzle.boardSize)
+
+				newPuzzle.boardBuilt[0][0] = 1
+
+				i_r = random.randint(0, n_max)
+
+				if i_r == n_max:
+					j_r = random.randint(0, (n_max - 1))
+				else:
+					j_r = random.randint(0, n_max)
+
+				valid = False
+				while valid is not True:
+					rand = random.randint(1, n_max)
+					if (i_r + rand < n_max) or (i_r - rand >= 0):
+						newPuzzle.boardBuilt[i_r][j_r] = rand
+						print('Successful Random Found')
+						valid = True
+					elif (j_r + rand < n_max) or (j_r - rand >= 0):
+						newPuzzle.boardBuilt[i_r][j_r] = rand
+						print('Successful Random Found')
+						valid = True
+					else:
+						print('Unsuccessful Random')
+
+				eval2 = evaluate.evaluate(newPuzzle.boardBuilt, puzzle.boardSize)
+
+				if eval2.value > eval1.value:
+					print('Hill Climbing mutation better')
+					puzzle = copy.deepcopy(newPuzzle)
+					eval = evaluate.evaluate(puzzle.boardBuilt, puzzle.boardSize)
+				else:
+					print('Original puzzle better or as good')
+					eval = evaluate.evaluate(puzzle.boardBuilt, puzzle.boardSize)
+
+				count += 1
+				iterations -= 1
+
 			print("> HillClimb mutation.")
 			print()
 

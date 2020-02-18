@@ -28,7 +28,6 @@ class evaluate():
                     q.put((i_2, j_2, self.steps[i][j] + 1))
                     v.add((i_2, j_2))
 
-
         if self.visited[size - 1][size - 1] != 'N':
             self.value = self.steps[size - 1][size - 1]
         else:
@@ -36,10 +35,3 @@ class evaluate():
             for n in self.visited:
                 k -= n.count('N')
             self.value = k
-
-    def mutate(self, board, size):
-        eval = evaluate(board, size)
-        newBoard = list(board)
-        newBoard[0][0] = 1
-
-        return newBoard
