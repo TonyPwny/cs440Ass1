@@ -8,7 +8,9 @@ import random
 import evaluate
 
 def mainAT():
-	puzzle = board.Board()											# builds a Board() object and assigns it to puzzle
+	userInput = raw_input("Enter 5 or greater for a board of that size, or 0 to randomize the board. ")
+
+	puzzle = board.Board(userInput)											# builds a Board() object and assigns it to puzzle
 
 	eval = evaluate.evaluate(puzzle.boardBuilt, puzzle.boardSize)		# creates the evaluate object
 
@@ -16,7 +18,7 @@ def mainAT():
 	while x == 0:
 
 		print("Puzzle difficulty score: " + str(eval.value))
- 
+
 		if eval.value <= 0:
 			print("This puzzle is UNSOLVABLE")
 
@@ -61,19 +63,7 @@ def mainAT():
 				else:
 					j_r = random.randint(0, n_max)
 
-				valid = False
-				while valid is not True:
-					rand = random.randint(1, n_max)
-					if (i_r + rand < n_max) or (i_r - rand >= 0):
-						newPuzzle.boardBuilt[i_r][j_r] = rand
-						print('Successful Random Found')
-						valid = True
-					elif (j_r + rand < n_max) or (j_r - rand >= 0):
-						newPuzzle.boardBuilt[i_r][j_r] = rand
-						print('Successful Random Found')
-						valid = True
-					else:
-						print('Unsuccessful Random')
+				newPuzzle.boardBuilt[i_r][j_r] = board.valid(i_r, j_r, puzzle.boardSize)
 
 				eval2 = evaluate.evaluate(newPuzzle.boardBuilt, puzzle.boardSize)
 
