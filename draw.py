@@ -1,3 +1,6 @@
+# Thomas Fiorilla
+# Module to visually display a board input using the turtle module
+
 import turtle
 import tkinter as tk
 

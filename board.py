@@ -1,27 +1,40 @@
+# Thomas Fiorilla
+# Module to generate a Board object
+
 import random				#import random for random generation
 
 # function to generate the board and place the start/end points
 # returns the built board and its size
 class Board:
-	def __init__(self):
+	def __init__(self, boardSize):
+		# checks to see if the user input board size is valid; if not...
 		# generate a random number between 1 and 4, map 1:5, 2:7, 3:9, assign the boardSize variable
 		# if 4 or any other number not 1,2,3, catch and map as 11
-		roll = random.randint(1,4)
-		if roll == 1:
+		# also assigns boardMax, which is the maximum number that will fit in ANY tile
+		
+		if boardSize not in {'5', '7', '9', '11'}:
+			roll = random.randint(1,4)
+		else:
+			roll = boardSize
+		
+		if roll == 1 or roll == '5':
 			self.boardSize = 5
+			boardMax = 2
 			
-		elif roll == 2:
+		elif roll == 2 or roll == '7':
 			self.boardSize = 7
+			boardMax = 3
 			
-		elif roll == 3:
+		elif roll == 3 or roll == '9':
 			self.boardSize = 9
+			boardMax = 4
 			
 		else:
 			self.boardSize = 11
-			
-		#
+			boardMax = 5
 		
-		self.boardBuilt = [[1 for x in range(self.boardSize)] for y in range(self.boardSize)]		# create a 2D array of size "size"x"size" all initialised to 1
+		
+		self.boardBuilt = [[boardMax for x in range(self.boardSize)] for y in range(self.boardSize)]		# create a 2D array of size "size"x"size" all initialised to boardMax
 		
 		i = 0
 		j = 0
@@ -49,5 +62,3 @@ class Board:
 		
 		# make the ending square a 0; always boardBuilt[boardSize-1][boardSize-1]
 		self.boardBuilt[self.boardSize-1][self.boardSize-1] = 0
-	#
-#
