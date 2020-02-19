@@ -2,7 +2,12 @@
 # Module to generate a Board object
 
 import random				#import random for random generation
-import math	# TEMPORARY
+
+def valid(i, j, size):
+	roll = random.randint(1, max({(size - 1) - i, 0 + i, (size - 1) - j, 0 + j}))
+	
+	return roll
+	
 
 # function to generate the board and place the start/end points
 # returns the built board and its size
@@ -46,9 +51,7 @@ class Board:
 				if (i == self.boardSize-1) and (j == self.boardSize-1):
 					break
 				else:
-					rollMax = max({(self.boardSize - 1) - i, 0 + i, (self.boardSize - 1) - j, 0 + j})
-					
-					roll = random.randint(1, rollMax)
+					roll = valid(i, j, self.boardSize)
 					
 					self.boardBuilt[i][j] = roll
 				
