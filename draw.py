@@ -33,7 +33,6 @@ def drawBoard(board, size):
 	turtle.setup(screenHeight,screenHeight,0,0)		#sets the initial size of the turtle window
 	turtle.ht()
 	
-	root.destroy()				#destroy the tk window now that we don't need it anymore
 	
 	
 	
@@ -84,14 +83,20 @@ def drawBoard(board, size):
 	corner(border)
 	start(square)
 	
-	style = ('Courier', 30)
+	textSize = int(((screenHeight-100)/size)/3)
+	style = ('Courier', textSize)
 	
 	i = 0
 	j = 0
 	while i < size:
 		while j < size:
 			boardNumber = board[i][j]
+			
+			turtle.rt(90)
+			turtle.fd(textSize)
 			turtle.write(boardNumber, font=style, align = 'center')
+			turtle.bk(textSize)
+			turtle.lt(90)
 			
 			turtle.fd(square)
 			j += 1
@@ -109,3 +114,4 @@ def drawBoard(board, size):
 	corner(border)
 	turtle.update()
 	
+	root.destroy()				#destroy the tk window now that we don't need it anymore

@@ -12,22 +12,28 @@ class Board:
 		# if 4 or any other number not 1,2,3, catch and map as 11
 		# also assigns boardMax, which is the maximum number that will fit in ANY tile
 		
-		if boardSize not in {'5', '7', '9', '11'}:
+		if boardSize not in {'5', '7', '9', '11', '51'}:
+			print("Random")
 			roll = random.randint(1,4)
 		else:
-			roll = boardSize
+			print("Not random")
+			roll = int(boardSize)
 		
-		if roll == 1 or roll == '5':
+		if roll in {1, 5}:
 			self.boardSize = 5
 			boardMax = 2
 			
-		elif roll == 2 or roll == '7':
+		elif roll in {2, 7}:
 			self.boardSize = 7
 			boardMax = 3
 			
-		elif roll == 3 or roll == '9':
+		elif roll in {3, 9}:
 			self.boardSize = 9
 			boardMax = 4
+			
+		elif roll == 51:
+			self.boardSize = 51
+			boardMax = 25
 			
 		else:
 			self.boardSize = 11
