@@ -8,7 +8,7 @@ import evaluate
 import hill
 
 def main():
-	userInput = input("Enter '5', '7', '9', '11' for a board of that size, or leave blank for a random board. ")
+	userInput = input("Enter 5 or greater for a board of that size, or 0 to randomize the board. ")
 	
 	gameBoard = board.Board(userInput)											# builds a Board() object and assigns it to gameBoard
 	
