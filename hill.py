@@ -4,6 +4,7 @@
 import copy
 import bfirst
 import random
+import board
 
 class Hill:
 	def __init__(self, board):
@@ -26,21 +27,9 @@ class Hill:
 				j_r = random.randint(0, (n_max - 1))
 			else:
 				j_r = random.randint(0, n_max)
-				
-			valid = False
-			while valid is not True:
-				rand = random.randint(1, n_max)
-				if (i_r + rand < n_max) or (i_r - rand >= 0):
-					newPuzzle.boardBuilt[i_r][j_r] = rand
-					print('Successful Random Found')
-					valid = True
-				elif (j_r + rand < n_max) or (j_r - rand >= 0):
-					newPuzzle.boardBuilt[i_r][j_r] = rand
-					print('Successful Random Found')
-					valid = True
-				else:
-					print('Unsuccessful Random')
-				
+			
+			newPuzzle.boardBuilt[i_r][j_r] = board.valid(i_r, j_r, self.puzzle.boardSize)
+			
 			eval2 = bfirst.evaluate(newPuzzle.boardBuilt, self.puzzle.boardSize)
 				
 			if eval2 > eval1:
