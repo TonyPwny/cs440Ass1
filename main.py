@@ -4,8 +4,8 @@
 
 import board				# import code for creating the board
 import draw					# import code for visually displaying the board on screen
-import evaluate
-import hill
+import evaluate				# import code for bfs
+import hill					# import code for hill-climbing
 
 def main():
 	userInput = input("Enter 5 or greater for a board of that size, or 0 to randomize the board. ")
@@ -20,8 +20,7 @@ def main():
 	# create a loop for user input to make selections to view the original board, etc
 	while True:
 		print()
-		print("Type '1' for the original board, '2' for number of steps on original board, '3' to implement Hill Climbing, '4' to view the Hill Board, '5' to view steps on Hill Board,")
-		userInput = input("    anything else to exit. ")
+		userInput = input("Type '1' for the original board, '2' for number of steps on original board, '3' to implement Hill Climbing, '4' to view the Hill Board, '5' to view steps on Hill Board, 'q' to exit. ")
 		
 		if userInput == '1':
 			draw.drawBoard(gameBoard.boardBuilt, gameBoard.boardSize)			# takes the created board and draws it with turtle, as visual output
@@ -50,7 +49,7 @@ def main():
 			draw.drawBoard(hillBFS.steps, hillBoard.puzzle.boardSize)
 			print("> Hill-Climbing board number of steps displayed")
 		
-		else:
+		elif userInput == 'q':
 			break
 
 
