@@ -85,6 +85,7 @@ def drawBoard(board, size):
 	
 	textSize = int(((screenHeight-100)/size)/3)
 	style = ('Courier', textSize)
+	root.destroy()				#destroy the tk window now that we don't need it anymore
 	
 	i = 0
 	j = 0
@@ -113,5 +114,3 @@ def drawBoard(board, size):
 	
 	corner(border)
 	turtle.update()
-	
-	root.destroy()				#destroy the tk window now that we don't need it anymore
