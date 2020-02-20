@@ -11,8 +11,6 @@ import time
 # 		the estimated amount of moves to the goal is 1
 #	otherwise, the amount of moves to goal is at least 2 because you need
 #		to move at least one more time to fulill the previous scenario
-def manhatDist(i, j, size):
-	return abs(i - (size - 1)) + abs(j - (size - 1))
 
 class AStarEval():
 	def __init__(self, board, size):
