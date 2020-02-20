@@ -6,6 +6,7 @@ import draw					# import code for visually displaying the board on screen
 import copy
 import random
 import evaluate
+import AStarEval
 
 def mainAT():
 	userInput = raw_input("Enter 5 or greater for a board of that size, or 0 to randomize the board. ")
@@ -23,7 +24,7 @@ def mainAT():
 			print("This puzzle is UNSOLVABLE")
 
 
-		userInput = raw_input("Type '1' for the puzzle board, '2' for the move depth of each position, '3' for the visited position matrix, '4' for a HillClimb mutation, 'q' to exit. ")
+		userInput = raw_input("Type '1' for the puzzle board, '2' for the move depth of each position, '3' for the visited position matrix, '4' for a HillClimb mutation, '5' for A* evaluation, 'q' to exit. ")
 
 		if userInput == '1':
 			draw.drawBoard(puzzle.boardBuilt, puzzle.boardSize)			# takes the created board and draws it with turtle, as visual output
@@ -80,6 +81,9 @@ def mainAT():
 
 			print("> HillClimb mutation.")
 			print()
+
+		elif userInput == '5':
+			AStarAgent = AStarEval.AStarEval(puzzle.boardBuilt, puzzle.boardSize)
 
 		elif userInput.lower() == 'q':
 			quit()
