@@ -60,16 +60,18 @@ class AStarEval():
 
 					for i_3, j_3 in ((i_2-m_2, j_2), (i_2+m_2, j_2), (i_2, j_2-m_2), (i_2, j_2+m_2)):
 
-						if (i_3 == size - 1 and i_3 == size - 1):
-							heuristic_2 = 0
-						elif (i_3 == size - 1 or j_3 == size - 1):
-							heuristic_2 = 1
-						else:
-							heuristic_2 = 2
+						if (0 <= i_2 < size) and (0 <= j_2 < size) and (i_2, j_2):
 
-						priority = moves[(i_2, j_2)] + heuristic + heuristic_2
-						pQ.put((i_2, j_2), priority)
-						prevPos[(i_2, j_2)] = (i, j)
+							if (i_3 == size - 1 and i_3 == size - 1):
+								heuristic_2 = 0
+							elif (i_3 == size - 1 or j_3 == size - 1):
+								heuristic_2 = 1
+							else:
+								heuristic_2 = 2
+
+							priority = moves[(i_2, j_2)] + heuristic + heuristic_2
+							pQ.put((i_2, j_2), priority)
+							prevPos[(i_2, j_2)] = (i, j)
 
 
 		if self.visited[size - 1][size - 1] != 'N':
