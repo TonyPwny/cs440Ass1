@@ -12,6 +12,9 @@ def mainAT():
 
 	userInput = raw_input("\nEnter 5 or greater for a board of that size, or 0 to randomize the board: ")
 
+	if userInput == "":
+		userInput = 0
+
 	puzzle = board.Board(userInput)											# builds a Board() object and assigns it to puzzle
 
 	eval = evaluate.evaluate(puzzle.boardBuilt, puzzle.boardSize)		# creates the evaluate object
@@ -78,6 +81,14 @@ def mainAT():
 
 					break
 
+				elif userInput == 'q':
+
+					quit()
+
+				else:
+
+					break
+
 		elif userInput == '5':
 
 			userInputHC = raw_input("\nEnter number of iterations to run a hill climbing mutation: ")
@@ -120,7 +131,6 @@ def mainAT():
 				iterations -= 1
 
 			print("\n> HillClimb mutation.\n")
-			print()
 
 		elif userInput == '6':
 
@@ -136,7 +146,7 @@ def mainAT():
 
 				print('Iteration: ' + str(count))
 
-				eval1 = evaluate.evaluate(puzzle.boardBuilt, puzzle.boardSize)
+				AStarAgent1 = AStarEval.AStarEval(puzzle.boardBuilt, puzzle.boardSize)
 				i_r = random.randint(0, n_max)
 
 				if i_r == n_max:
@@ -148,9 +158,9 @@ def mainAT():
 
 				newPuzzle.boardBuilt[i_r][j_r] = board.valid(i_r, j_r, puzzle.boardSize)
 
-				eval2 = evaluate.evaluate(newPuzzle.boardBuilt, puzzle.boardSize)
+				AStarAgent2 = AStarEval.AStarEval(newPuzzle.boardBuilt, puzzle.boardSize)
 
-				if eval2.value > eval1.value:
+				if AStarAgent2.value > AStarAgent1.value:
 
 					print('Genetic mutation better')
 					puzzle = copy.deepcopy(newPuzzle)
@@ -164,8 +174,6 @@ def mainAT():
 				iterations -= 1
 
 			print("\n> Genetic mutation.\n")
-			print()
-
 
 		elif userInput.lower() == 'q':
 

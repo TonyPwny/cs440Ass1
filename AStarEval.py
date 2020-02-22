@@ -4,8 +4,10 @@
 # https://www.geeksforgeeks.org/printing-paths-dijkstras-shortest-path-algorithm/
 # https://www.redblobgames.com/pathfinding/a-star/introduction.html
 # https://dbader.org/blog/priority-queues-in-python
+# https://www.geeksforgeeks.org/stack-in-python/
 
 from queue import PriorityQueue
+import copy
 import time
 
 # f(n) = estimated total moves to goal where goal is when i = j = size - 1
@@ -34,7 +36,7 @@ class AStarEval():
 
 		pQ.put((2, 0, 0, 0))
 		v.add((0, 0))
-		prevPos[(0,0)] = None
+		prevPos[(0, 0)] = None
 
 		while not pQ.empty():
 
@@ -83,3 +85,14 @@ class AStarEval():
 		end = time.time()
 
 		self.evalTime = (end - start) * 1000
+
+		pathStack = []
+		pathStack.append((size - 1, size - 1))
+		backtrack = prevPos[(size - 1, size - 1)]
+		print("\nPath to goal:\n")
+		while backtrack != None:
+			i_p, j_p = backtrack
+			pathStack.append((i_p, j_p))
+			backtrack = prevPos[(i_p, j_p)]
+		while pathStack:
+			print(pathStack.pop())
