@@ -6,6 +6,7 @@ import board				# import code for creating the board
 import draw					# import code for visually displaying the board on screen
 import evaluate				# import code for bfs
 import hill					# import code for hill-climbing
+import AStarEval
 
 def main():
 	userInput = input("Enter 5 or greater for a board of that size, or 0 to randomize the board. ")
@@ -15,16 +16,19 @@ def main():
 	bfs = evaluate.evaluate(gameBoard.boardBuilt, gameBoard.boardSize)		# creates the bfs object for the original board
 	hillBoard = hill.Hill(gameBoard)										# creates a hill-climbing object with the original board
 	
+	aStar = AStarEval.AStarEval(gameBoard.boardBuilt, gameBoard.boardSize)		# create an A* object for the original board
+	
 	print("Score for the board: " + str(bfs.value) + "; time for BFS (ms): " + str(bfs.evalTime))			# prints the score for the original board
 	
 	# create a loop for user input to make selections to view the original board, etc
 	while True:
 		print()
-		userInput = input("Type '1' for the original board, '2' for number of steps on original board, '3' to implement Hill Climbing, '4' to view the Hill Board, '5' to view steps on Hill Board, 'q' to exit. ")
+		userInput = input("Type '1' for the original board, '2' for number of steps on original board, '3' to implement Hill Climbing, '4' to view the Hill Board, '5' to view steps on Hill Board, "
+			+ "'6' to view A* score, 'q' to exit. ")
 		
 		if userInput == '1':
 			draw.drawBoard(gameBoard.boardBuilt, gameBoard.boardSize)			# takes the created board and draws it with turtle, as visual output
-			print("> Original game board displayed.")
+			print("> Original game board displayed. Score: " + str(bfs.value))
 		
 		elif userInput == '2':
 			draw.drawBoard(bfs.steps, gameBoard.boardSize)						# uses the draw module 
@@ -42,12 +46,16 @@ def main():
 		
 		elif userInput == '4':
 			draw.drawBoard(hillBoard.puzzle.boardBuilt, gameBoard.boardSize)			# takes the created board and draws it with turtle, as visual output
-			print("> Hill-CLimbing game board displayed.")
+			print("> Hill-CLimbing game board displayed. Score: " + str(hillBoard.score))
 		
 		elif userInput == '5':
 			hillBFS = evaluate.evaluate(hillBoard.puzzle.boardBuilt, hillBoard.puzzle.boardSize)			# creates a new bfs object for the hill-climbing board
 			draw.drawBoard(hillBFS.steps, hillBoard.puzzle.boardSize)
 			print("> Hill-Climbing board number of steps displayed")
+		
+		elif userInput == '6':
+			#draw.drawBoard(aStar.steps, gameBoard.boardSize)
+			print("> A* steps displayed. \nBFS Score, Time: " + str(bfs.value) + ", " + str(bfs.evalTime) + "\nA* Score, Time: " + str(aStar.value) + ", " + str(aStar.evalTime))
 		
 		elif userInput == 'q':
 			break
