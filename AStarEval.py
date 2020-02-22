@@ -13,8 +13,7 @@ import time
 # 		the estimated amount of moves left to the goal is only 1.
 #	if i_2 = size - 1 or j_2 = size - 1, the estimated amount of moves left
 #		to the goal is 2.
-#	otherwise, the amount of moves to goal is at least 3 because you need
-#		to move at least two more times to fulill the previous scenario
+#	otherwise, the amount of moves to goal is at least 3.
 
 class AStarEval():
 
