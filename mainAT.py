@@ -10,7 +10,7 @@ import AStarEval
 
 def mainAT():
 
-	userInput = raw_input("Enter 5 or greater for a board of that size, or 0 to randomize the board. ")
+	userInput = raw_input("\nEnter 5 or greater for a board of that size, or 0 to randomize the board: ")
 
 	puzzle = board.Board(userInput)											# builds a Board() object and assigns it to puzzle
 
@@ -19,32 +19,31 @@ def mainAT():
 	x = 0
 	while x == 0:
 
-		print("Puzzle difficulty score: " + str(eval.value))
+		print("\nPuzzle difficulty score: " + str(eval.value))
 
 		if eval.value <= 0:
 
-			print("This puzzle is UNSOLVABLE!")
+			print("This puzzle is UNSOLVABLE!\n")
+		else:
+			print("\n")
 
 
-		userInput = raw_input("Type '1' for the puzzle board, '2' for the move depth of each position, '3' for the visited position matrix, '4' for A* evaluation, '5' for a HillClimb mutation, '6' for a Genetic mutation, 'q' to exit. ")
+		userInput = raw_input("'1' for the puzzle board\n'2' for the move depth of each position\n'3' for the visited position matrix\n'4' for A* evaluation\n'5' for a HillClimb mutation\n'6' for a Genetic mutation\n'q' to exit\n\n>> ")
 
 		if userInput == '1':
 
 			draw.drawBoard(puzzle.boardBuilt, puzzle.boardSize)			# takes the created board and draws it with turtle, as visual output
-			print("> Displaying puzzle.")
-			print()
+			print("\n> Displaying puzzle.\n")
 
 		elif userInput == '2':
 
 			draw.drawBoard(eval.steps, puzzle.boardSize)
-			print("> Displaying number of moves to reach each position.")
-			print()
+			print("\n> Displaying number of moves to reach each position.\n")
 
 		elif userInput == '3':
 
 			draw.drawBoard(eval.visited, puzzle.boardSize)
-			print("> Displaying visitable positions.")
-			print()
+			print("\n> Displaying visitable positions.\n")
 
 		elif userInput == '4':
 
@@ -55,30 +54,27 @@ def mainAT():
 
 				if AStarAgent.value <= 0:
 
-					print("This puzzle is UNSOLVABLE!")
+					print("\nThis puzzle is UNSOLVABLE!\n")
 				else:
 
-					print("A* evaluation solved in: " + str(AStarAgent.value) + " moves")
+					print("\nA* evaluation solved in: " + str(AStarAgent.value) + " moves\n")
 
-				userInput = raw_input("Type '1' for the puzzle board, '2' for the A* move depth evaluation, '3' for the A* visited position matrix, 'b' to go back. ")
+				userInput = raw_input("\n'1' for the puzzle board\n'2' for the A* move depth evaluation\n'3' for the A* visited position matrix\n'b' to go back\n\n>> ")
 
 				if userInput == '1':
 
 					draw.drawBoard(puzzle.boardBuilt, puzzle.boardSize)			# takes the created board and draws it with turtle, as visual output
-					print("> Displaying puzzle.")
-					print()
+					print("\n> Displaying puzzle.\n")
 
 				elif userInput == '2':
 
 					draw.drawBoard(AStarAgent.steps, puzzle.boardSize)
-					print("> Displaying A* move count for positions visited.")
-					print()
+					print("\n> Displaying A* move count for positions visited.\n")
 
 				elif userInput == '3':
 
 					draw.drawBoard(AStarAgent.visited, puzzle.boardSize)
-					print("> Displaying positions visited by A* evaluation.")
-					print()
+					print("\n> Displaying positions visited by A* evaluation.\n")
 
 				elif userInput == 'b':
 
@@ -86,7 +82,7 @@ def mainAT():
 
 		elif userInput == '5':
 
-			userInputHC = raw_input("Enter number of iterations to run a hill climbing mutation: ")
+			userInputHC = raw_input("\nEnter number of iterations to run a hill climbing mutation: ")
 
 			iterations = int(userInputHC)
 
@@ -125,12 +121,12 @@ def mainAT():
 				count += 1
 				iterations -= 1
 
-			print("> HillClimb mutation.")
+			print("\n> HillClimb mutation.\n")
 			print()
 
 		elif userInput == '6':
 
-			userInputHC = raw_input("Enter number of iterations to run a genetic mutation: ")
+			userInputHC = raw_input("\nEnter number of iterations to run a genetic mutation: ")
 
 			iterations = int(userInputHC)
 
@@ -169,7 +165,7 @@ def mainAT():
 				count += 1
 				iterations -= 1
 
-			print("> Genetic mutation.")
+			print("\n> Genetic mutation.\n")
 			print()
 
 
