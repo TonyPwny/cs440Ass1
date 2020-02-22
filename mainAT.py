@@ -143,7 +143,6 @@ def mainAT():
 				print('Iteration: ' + str(count))
 
 				eval1 = evaluate.evaluate(puzzle.boardBuilt, puzzle.boardSize)
-				newPuzzle.boardBuilt[0][0] = 1
 				i_r = random.randint(0, n_max)
 
 				if i_r == n_max:
@@ -159,7 +158,7 @@ def mainAT():
 
 				if eval2.value > eval1.value:
 
-					print('Hill Climbing mutation better')
+					print('Genetic mutation better')
 					puzzle = copy.deepcopy(newPuzzle)
 					eval = evaluate.evaluate(puzzle.boardBuilt, puzzle.boardSize)
 				else:
@@ -170,7 +169,7 @@ def mainAT():
 				count += 1
 				iterations -= 1
 
-			print("> HillClimb mutation.")
+			print("> Genetic mutation.")
 			print()
 
 

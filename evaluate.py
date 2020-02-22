@@ -25,7 +25,12 @@ class evaluate():
 
 			self.visited[i][j] = 'Y'
 			self.steps[i][j] = depth
-			m = board[i][j]
+			if i == size - 1 and j == size - 1:
+
+				m = 0
+			else:
+
+				m = board[i][j]
 
 			for i_2, j_2 in ((i-m, j), (i+m, j), (i, j-m), (i, j+m)):
 
@@ -44,7 +49,7 @@ class evaluate():
 			for n in self.visited:
 
 				k -= n.count('N')
-				
+
 			self.value = k
 
 		end = time.time()
