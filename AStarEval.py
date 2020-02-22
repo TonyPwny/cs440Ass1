@@ -86,13 +86,19 @@ class AStarEval():
 
 		self.evalTime = (end - start) * 1000
 
-		pathStack = []
-		pathStack.append((size - 1, size - 1))
-		backtrack = prevPos[(size - 1, size - 1)]
-		print("\nPath to goal:\n")
-		while backtrack != None:
-			i_p, j_p = backtrack
-			pathStack.append((i_p, j_p))
-			backtrack = prevPos[(i_p, j_p)]
-		while pathStack:
-			print(pathStack.pop())
+		# Puzzle Pathfinder for SOLVABLE puzzles
+		if self.value > 0:
+			self.shortestPath = []
+			pathStack = []
+			pathStack.append((size - 1, size - 1))
+			backtrack = prevPos[(size - 1, size - 1)]
+			print("\nPath to goal:")
+			while backtrack != None:
+				i_p, j_p = backtrack
+				pathStack.append((i_p, j_p))
+				backtrack = prevPos[(i_p, j_p)]
+				while pathStack:
+					pathfinder = pathStack.pop()
+					self.shortestPath.append(pathfinder)
+
+			print(self.shortestPath)
