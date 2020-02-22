@@ -1,4 +1,4 @@
-# Anthony Tiongson fork from Fiorilla
+# Anthony Tiongson modified evaluation to implement an A* heuristic
 # Python2.7
 
 from queue import PriorityQueue
