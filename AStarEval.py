@@ -1,4 +1,4 @@
-# Anthony Tiongson modified evaluation to implement an A* heuristic
+# Anthony Tiongson, forked from evaluate class to implement an A* heuristic
 # Python2.7
 
 from queue import PriorityQueue

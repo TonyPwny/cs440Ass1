@@ -1,4 +1,4 @@
-# Anthony Tiongson fork from Fiorilla
+# Anthony Tiongson, forked from Thomas Fiorilla's bfirst attempt
 # Python2.7
 
 from queue import Queue

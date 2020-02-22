@@ -1,4 +1,4 @@
-# Anthony Tiongson fork from Fiorilla
+# Anthony Tiongson forked from Thomas Fiorilla's main
 # Python2.7
 
 import board				# import code for creating the board
@@ -16,8 +16,7 @@ def mainAT():
 
 	eval = evaluate.evaluate(puzzle.boardBuilt, puzzle.boardSize)		# creates the evaluate object
 
-	x = 0
-	while x == 0:
+	while True:
 
 		print("\nPuzzle difficulty score: " + str(eval.value))
 
@@ -49,8 +48,7 @@ def mainAT():
 
 			AStarAgent = AStarEval.AStarEval(puzzle.boardBuilt, puzzle.boardSize)
 
-			y = 0
-			while y == 0:
+			while True:
 
 				if AStarAgent.value <= 0:
 
@@ -78,7 +76,7 @@ def mainAT():
 
 				elif userInput == 'b':
 
-					y = -1
+					break
 
 		elif userInput == '5':
 
@@ -174,7 +172,7 @@ def mainAT():
 			quit()
 
 		else:
-			x = -1
+			break
 #
 
 
