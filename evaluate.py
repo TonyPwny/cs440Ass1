@@ -1,5 +1,7 @@
 # Anthony Tiongson, forked from Thomas Fiorilla's bfirst attempt
 # Python2.7
+# resources used:
+# https://www.youtube.com/watch?v=pcKY4hjDrxk&t=377s
 
 from queue import Queue
 import time

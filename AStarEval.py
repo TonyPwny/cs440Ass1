@@ -1,5 +1,9 @@
 # Anthony Tiongson, forked from evaluate class to implement an A* heuristic
 # Python2.7
+# resources used:
+# https://www.geeksforgeeks.org/printing-paths-dijkstras-shortest-path-algorithm/
+# https://www.redblobgames.com/pathfinding/a-star/introduction.html
+# https://dbader.org/blog/priority-queues-in-python
 
 from queue import PriorityQueue
 import time
