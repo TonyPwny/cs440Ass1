@@ -23,16 +23,16 @@ class Board:
 		else:
 			roll = random.randint(0,3)
 
-		if roll == 1:
+		if roll == 0:
 			self.boardSize = 5
 
-		elif roll == 2:
+		elif roll == 1:
 			self.boardSize = 7
 
-		elif roll == 3:
+		elif roll == 2:
 			self.boardSize = 9
 
-		elif roll == 4:
+		elif roll == 3:
 			self.boardSize = 11
 
 		else:
