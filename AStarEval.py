@@ -3,6 +3,7 @@
 
 from queue import PriorityQueue
 import time
+
 # f(n) = estimated total moves to goal where goal is when i = j = size - 1
 # f(n) = g(n) + h(n)
 # g(n) = moves so far
@@ -13,9 +14,11 @@ import time
 #		to move at least one more time to fulill the previous scenario
 
 class AStarEval():
-	def __init__(self, board, size):
-		start = time.time()
 
+	def __init__(self, board, size):
+
+		start = time.time()
+		
 		self.visited = [['N' for i in range(size)] for j in range(size)]
 		self.steps = [['X' for i in range(size)] for j in range(size)]
 
@@ -28,15 +31,14 @@ class AStarEval():
 		prevPos[(0,0)] = None
 
 		while not pQ.empty():
-			estimate, i, j, depth = pQ.get()
 
-			print('Current position: (' + str(i) + ', ' + str(j) + ')')
-			print('Previous position: ' + str(prevPos[(i, j)]))
+			estimate, i, j, depth = pQ.get()
 
 			self.visited[i][j] = 'Y'
 			self.steps[i][j] = depth
 
 			if i == size - 1 and j == size - 1:
+
 				break
 
 			m = board[i][j]
@@ -46,8 +48,10 @@ class AStarEval():
 				if (0 <= i_2 < size) and (0 <= j_2 < size) and ((i_2, j_2) not in v):
 
 					if i_2 == size - 1 or j_2 == size - 1:
+
 						estimate = depth + 1
 					else:
+
 						estimate = depth + 2
 
 					pQ.put((estimate, i_2, j_2, self.steps[i][j] + 1))
@@ -55,15 +59,17 @@ class AStarEval():
 					prevPos[(i_2, j_2)] = (i, j)
 
 		if self.visited[size - 1][size - 1] != 'N':
+
 			self.value = self.steps[size - 1][size - 1]
 		else:
-			k = 0
-			for n in self.visited:
-				k -= n.count('N')
-			self.value = k
 
-		print('A* evaluation done: solved in ' + str(self.steps[size - 1][size - 1]) + ' moves')
-		print('A* value is ' + str(self.value))
+			k = 0
+
+			for n in self.visited:
+
+				k -= n.count('N')
+
+			self.value = k
 
 		end = time.time()
 
