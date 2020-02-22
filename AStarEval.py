@@ -8,17 +8,20 @@ import time
 # f(n) = g(n) + h(n)
 # g(n) = moves so far
 # h(n) = heuristic estimating how many moves to goal, never overestimate
-# 	the heuristic says that if i = size - 1 or if j = size - 1,
-# 		the estimated amount of moves to the goal is 1
-#	otherwise, the amount of moves to goal is at least 2 because you need
-#		to move at least one more time to fulill the previous scenario
+# 	the heuristic says that for a current position (i, j) and its possible
+#		next position (i_2, j_2), if i_2 = size - 1 and if j_2 = size - 1,
+# 		the estimated amount of moves left to the goal is only 1.
+#	if i_2 = size - 1 or j_2 = size - 1, the estimated amount of moves left
+#		to the goal is 2.
+#	otherwise, the amount of moves to goal is at least 3 because you need
+#		to move at least two more times to fulill the previous scenario
 
 class AStarEval():
 
 	def __init__(self, board, size):
 
 		start = time.time()
-		
+
 		self.visited = [['N' for i in range(size)] for j in range(size)]
 		self.steps = [['X' for i in range(size)] for j in range(size)]
 
@@ -47,12 +50,15 @@ class AStarEval():
 
 				if (0 <= i_2 < size) and (0 <= j_2 < size) and ((i_2, j_2) not in v):
 
-					if i_2 == size - 1 or j_2 == size - 1:
+					if i_2 == size - 1 and j_2 == size - 1:
 
 						estimate = depth + 1
-					else:
+					elif i_2 == size - 1 or j_2 == size - 1:
 
 						estimate = depth + 2
+					else:
+
+						estimate = depth + 3
 
 					pQ.put((estimate, i_2, j_2, self.steps[i][j] + 1))
 					v.add((i_2, j_2))
