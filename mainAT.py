@@ -103,7 +103,7 @@ def mainAT():
 					print("This puzzle is UNSOLVABLE!")
 				else:
 
-					print("A* evaluation solved in: " + str(AStarAgent.value " moves"))
+					print("A* evaluation solved in: " + str(AStarAgent.value) + " moves")
 
 				userInput = raw_input("Type '1' for the puzzle board, '2' for the A* move depth evaluation, '3' for the A* visited position matrix, 'b' to go back. ")
 
