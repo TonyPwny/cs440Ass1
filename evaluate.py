@@ -66,10 +66,8 @@ class evaluate():
 		if self.value > 0:
 
 			backtrack = (size - 1, size - 1)
-			print("\nPath from goal:")
+
 			while backtrack != None:
 
 				self.shortestPath.append(backtrack)
 				backtrack = prevPos[backtrack]
-
-			print(self.shortestPath[::-1])

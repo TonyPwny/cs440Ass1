@@ -23,11 +23,15 @@ def mainAT():
 
 		print("\nPuzzle difficulty score: " + str(eval.value))
 
-		if eval.value <= 0:
+		if eval.value < 0:
 
 			print("This puzzle is UNSOLVABLE!\n")
 		else:
+
+			print("Path to goal:")
+			print(eval.shortestPath[::-1])
 			print("\n")
+
 
 
 		userInput = raw_input("'1' for the puzzle board\n'2' for the move depth of each position\n'3' for the visited position matrix\n'4' for A* evaluation\n'5' for a HillClimb mutation\n'6' for a Genetic mutation\n'q' to exit\n\n>> ")
@@ -53,12 +57,16 @@ def mainAT():
 
 			while True:
 
-				if AStarAgent.value <= 0:
+				if AStarAgent.value < 0:
 
-					print("\nThis puzzle is UNSOLVABLE!\n")
+					print("\nSolvability score: " + str(AStarAgent.value))
+					print("This puzzle is UNSOLVABLE!\n")
 				else:
 
-					print("\nA* evaluation solved in: " + str(AStarAgent.value) + " moves\n")
+					print("\nA* evaluation solved in: " + str(AStarAgent.value) + " moves")
+					print("Path to goal:")
+					print(AStarAgent.shortestPath[::-1])
+					print("\n")
 
 				userInput = raw_input("\n'1' for the puzzle board\n'2' for the A* move depth evaluation\n'3' for the A* visited position matrix\n'b' to go back\n\n>> ")
 
