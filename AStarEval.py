@@ -89,16 +89,12 @@ class AStarEval():
 		# Puzzle Pathfinder for SOLVABLE puzzles
 		self.shortestPath = []
 		if self.value > 0:
-			pathStack = []
-			pathStack.append((size - 1, size - 1))
-			backtrack = prevPos[(size - 1, size - 1)]
-			print("\nPath to goal:")
-			while backtrack != None:
-				i_p, j_p = backtrack
-				pathStack.append((i_p, j_p))
-				backtrack = prevPos[(i_p, j_p)]
-				while pathStack:
-					pathfinder = pathStack.pop()
-					self.shortestPath.append(pathfinder)
 
-			print(self.shortestPath)
+			backtrack = (size - 1, size - 1)
+			print("\nPath from goal:")
+			while backtrack != None:
+
+				self.shortestPath.append(backtrack)
+				backtrack = prevPos[backtrack]
+
+			print(self.shortestPath[::-1])

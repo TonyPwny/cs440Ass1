@@ -17,9 +17,11 @@ class evaluate():
 
 		q = Queue()
 		v = set()
+		prevPos = {}
 
 		q.put((0, 0, 0))
 		v.add((0, 0))
+		prevPos[(0, 0)] = None
 
 		while not q.empty():
 
@@ -40,6 +42,7 @@ class evaluate():
 
 					q.put((i_2, j_2, self.steps[i][j] + 1))
 					v.add((i_2, j_2))
+					prevPos[(i_2, j_2)] = (i, j)
 
 		if self.visited[size - 1][size - 1] != 'N':
 
@@ -57,3 +60,16 @@ class evaluate():
 		end = time.time()
 
 		self.evalTime = (end - start) * 1000
+
+		# Puzzle Pathfinder for SOLVABLE puzzles
+		self.shortestPath = []
+		if self.value > 0:
+
+			backtrack = (size - 1, size - 1)
+			print("\nPath from goal:")
+			while backtrack != None:
+
+				self.shortestPath.append(backtrack)
+				backtrack = prevPos[backtrack]
+
+			print(self.shortestPath[::-1])
