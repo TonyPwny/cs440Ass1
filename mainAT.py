@@ -17,7 +17,8 @@ def mainAT():
 
 	puzzle = board.Board(userInput)											# builds a Board() object and assigns it to puzzle
 
-	eval = evaluate.evaluate(puzzle.boardBuilt, puzzle.boardSize)		# creates the evaluate object
+	eval = evaluate.evaluate(puzzle.boardBuilt, puzzle.boardSize)			# creates the BFS evaluate object
+	AStarAgent = AStarEval.AStarEval(puzzle.boardBuilt, puzzle.boardSize)	# creates the A* evaluate object
 
 	while True:
 
@@ -52,8 +53,6 @@ def mainAT():
 			print("\n> Displaying visitable positions.\n")
 
 		elif userInput == '4':
-
-			AStarAgent = AStarEval.AStarEval(puzzle.boardBuilt, puzzle.boardSize)
 
 			while True:
 
@@ -142,12 +141,18 @@ def mainAT():
 
 		elif userInput == '6':
 
+# Genetic Algorithm, forked from Hill-Climbing
+# Instead of randomly choosing i_r and j_r from the entire board, i_r and j_r
+# are randomly chosen from a list containing positions of the current shortest
+# path to goal when that exists.
+
 			userInputHC = raw_input("\nEnter number of iterations to run a genetic mutation: ")
 
 			iterations = int(userInputHC)
 
 			n_max = puzzle.boardSize - 1
-			newPuzzle = copy.deepcopy(puzzle)
+			puzzle_2 = copy.deepcopy(puzzle)
+			puzzle_3 = copy.deepcopy(puzzle)
 			count = 1
 
 			while iterations > 0:
@@ -155,32 +160,70 @@ def mainAT():
 				print('Iteration: ' + str(count))
 
 				AStarAgent1 = AStarEval.AStarEval(puzzle.boardBuilt, puzzle.boardSize)
-				i_r = random.randint(0, n_max)
 
-				if i_r == n_max:
+				if AStarAgent1.value < 0:
 
-					j_r = random.randint(0, (n_max - 1))
+					i_r = random.randint(0, n_max)
+
+					if i_r == n_max:
+
+						j_r = random.randint(0, (n_max - 1))
+					else:
+
+						j_r = random.randint(0, n_max)
 				else:
 
-					j_r = random.randint(0, n_max)
+					i_r, j_r = random.choice(AStarAgent1.shortestPath[1:])
 
-				newPuzzle.boardBuilt[i_r][j_r] = board.valid(i_r, j_r, puzzle.boardSize)
+				puzzle_2.boardBuilt[i_r][j_r] = board.valid(i_r, j_r, puzzle.boardSize)
 
-				AStarAgent2 = AStarEval.AStarEval(newPuzzle.boardBuilt, puzzle.boardSize)
+				AStarAgent2 = AStarEval.AStarEval(puzzle_2.boardBuilt, puzzle.boardSize)
+
+				i_r2 = random.randint(0, n_max)
+
+				if i_r2 == n_max:
+
+					j_r2 = random.randint(0, (n_max - 1))
+				else:
+
+					j_r2 = random.randint(0, n_max)
+
+				puzzle_3.boardBuilt[i_r2][j_r2] = board.valid(i_r2, j_r2, puzzle.boardSize)
+
+				AStarAgent3 = AStarEval.AStarEval(puzzle_3.boardBuilt, puzzle.boardSize)
 
 				if AStarAgent2.value > AStarAgent1.value:
 
-					print('Genetic mutation better')
-					puzzle = copy.deepcopy(newPuzzle)
-					eval = evaluate.evaluate(puzzle.boardBuilt, puzzle.boardSize)
+					print('Targeted hill-climbing mutation better than original')
+
+					if AStarAgent3.value > AStarAgent2.value:
+
+						puzzle = copy.deepcopy(puzzle_3)
+						AStarAgent = AStarEval.AStarEval(puzzle.boardBuilt, puzzle.boardSize)
+						print('Regular hill-climbing mutation better than targeted')
+					else:
+
+						puzzle = copy.deepcopy(puzzle_2)
+						AStarAgent = AStarEval.AStarEval(puzzle.boardBuilt, puzzle.boardSize)
+						print('Targeted hill-climbing better than general')
 				else:
 
-					print('Original puzzle better or as good')
-					eval = evaluate.evaluate(puzzle.boardBuilt, puzzle.boardSize)
+					print('Original puzzle better than targeted hill-climbing')
+
+					if AStarAgent3.value > AStarAgent1.value:
+
+						puzzle = copy.deepcopy(puzzle_3)
+						AStarAgent = AStarEval.AStarEval(puzzle.boardBuilt, puzzle.boardSize)
+						print('General hill-climbing better than original')
+					else:
+
+						AStarAgent = AStarEval.AStarEval(puzzle.boardBuilt, puzzle.boardSize)
+						print('Original puzzle better than general hill-climbing')
 
 				count += 1
 				iterations -= 1
 
+			eval = evaluate.evaluate(puzzle.boardBuilt, puzzle.boardSize)
 			print("\n> Genetic mutation.\n")
 
 		elif userInput.lower() == 'q':

@@ -4,10 +4,9 @@
 import random				#import random for random generation
 
 def valid(i, j, size):
+
 	roll = random.randint(1, max({(size - 1) - i, 0 + i, (size - 1) - j, 0 + j}))
-
 	return roll
-
 
 # function to generate the board and place the start/end points
 # returns the built board and its size
