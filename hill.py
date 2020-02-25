@@ -3,6 +3,7 @@
 
 import copy
 import bfirst
+import evaluate
 import random
 import board
 import time
@@ -20,7 +21,7 @@ class Hill:
 		
 		while iterations > 0:
 			# print('Iteration: ' + str(count))
-			eval1 = bfirst.evaluate(self.puzzle.boardBuilt, self.puzzle.boardSize)
+			eval1 = evaluate.evaluate(self.puzzle.boardBuilt, self.puzzle.boardSize).value
 			i_r = random.randint(0, n_max)
 			
 			if i_r == n_max:
@@ -30,20 +31,20 @@ class Hill:
 				
 			newPuzzle.boardBuilt[i_r][j_r] = board.valid(i_r, j_r, self.puzzle.boardSize)
 			
-			eval2 = bfirst.evaluate(newPuzzle.boardBuilt, self.puzzle.boardSize)
+			eval2 = evaluate.evaluate(newPuzzle.boardBuilt, self.puzzle.boardSize).value
 			
 			if eval2 >= eval1:
 				# print('Hill Climbing mutation better')
 				self.puzzle = copy.deepcopy(newPuzzle)
-				eval = bfirst.evaluate(self.puzzle.boardBuilt, self.puzzle.boardSize)
+				eval = evaluate.evaluate(self.puzzle.boardBuilt, self.puzzle.boardSize).value
 			else:
 				# print('Original puzzle better or as good')
-				eval = bfirst.evaluate(self.puzzle.boardBuilt, self.puzzle.boardSize)
+				eval = evaluate.evaluate(self.puzzle.boardBuilt, self.puzzle.boardSize).value
 				
 			count += 1
 			iterations -= 1
 			
-		self.score = bfirst.evaluate(self.puzzle.boardBuilt, self.puzzle.boardSize)
+		self.score = evaluate.evaluate(self.puzzle.boardBuilt, self.puzzle.boardSize).value
 		
 		end = time.time()
 		
