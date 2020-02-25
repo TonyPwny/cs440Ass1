@@ -7,6 +7,7 @@ import draw					# import code for visually displaying the board on screen
 import evaluate				# import code for bfs
 import hill					# import code for hill-climbing
 import AStarEval
+import genetic
 
 def main():
 	userInput = input("Enter 5 or greater for a board of that size, or 0 to randomize the board. ")
@@ -17,6 +18,8 @@ def main():
 	hillBoard = hill.Hill(gameBoard)										# creates a hill-climbing object with the original board
 	
 	aStar = AStarEval.AStarEval(gameBoard.boardBuilt, gameBoard.boardSize)		# create an A* object for the original board
+	
+	gene = genetic.Genetic(gameBoard)
 	
 	print("Score for the board: " + str(bfs.value) + "; time for BFS (ms): " + str(bfs.evalTime))			# prints the score for the original board
 	
@@ -56,6 +59,15 @@ def main():
 		elif userInput == '6':
 			#draw.drawBoard(aStar.steps, gameBoard.boardSize)
 			print("> A* steps displayed. \nBFS Score, Time: " + str(bfs.value) + ", " + str(bfs.evalTime) + "\nA* Score, Time: " + str(aStar.value) + ", " + str(aStar.evalTime))
+		
+		elif userInput == '7':
+			userInput = int(input("> How many iterations would you like genetic to try? "))
+			
+			while userInput < 0:
+				userInput = input("> How many iterations would you like genetic to try? ")
+			
+			gene.run(bfs, userInput)
+			print(gene.score)
 		
 		elif userInput == 'q':
 			break

@@ -11,6 +11,7 @@ import time
 class Hill:
 	def __init__(self, board):
 		self.puzzle = copy.deepcopy(board)
+		self.averageScore = []
 		
 	def climb(self, iterations):
 		start = time.time()

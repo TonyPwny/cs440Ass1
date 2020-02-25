@@ -7,12 +7,15 @@ import draw					# import code for visually displaying the board on screen
 import evaluate				# import code for bfs
 import hill					# import code for hill-climbing
 import AStarEval			# import code for A* search
+import genetic				# import code for genetic algorithm
 
 size = 16										# size of the array
 numberPer = size/4								# with default 4 'n' sizes, number of sizes of each 'n'
 boards = [None for x in range(size)]			# array for 'size' board ojects
 
 hills = [None for x in range(size)]				# array for hill-climbing objects to make a more difficult board
+
+gene = [None for x in range(size)]				# array for genetic algorithm objects
 
 bfs = [None for x in range(size)]				# array for the BFS objects evaluating the original board
 bfsHill = [None for x in range(size)]			# array for the BFS objects evaluating the hill-climbing board
@@ -42,6 +45,9 @@ while i < size:
 		bfs[i] = evaluate.evaluate(boards[i].boardBuilt, boards[i].boardSize)					# create BFS objects to evaluate original board
 		bfsHill[i] = evaluate.evaluate(hills[i].puzzle.boardBuilt, hills[i].puzzle.boardSize)	# create BFS object to evaluate hill-climbing board
 		
+		gene[i] = genetic.Genetic(boards[i])
+		gene[i].run(bfs[i], iterations)
+		
 		aStar[i] = AStarEval.AStarEval(boards[i].boardBuilt, boards[i].boardSize)					# create A* objects to evaluate original board
 		aStarHill[i] = AStarEval.AStarEval(hills[i].puzzle.boardBuilt, hills[i].puzzle.boardSize)	# create A* objects to evaluate hill-climbing board
 		
@@ -58,10 +64,14 @@ bfsTime = [n.evalTime for n in bfs]								# array with the bfs time evaluation
 
 bfsTimeHill = [n.evalTime for n in bfsHill]
 
+geneTime = [n.evalTime for n in gene]							# array with genetic algorithm time evaluation
+geneScore = [n.score for n in gene]								# 
+
 hillScore = [n.score for n in hills]							# array with the hill-climb scores
 hillTime = [n.evalTime for n in hills]							# array with the hill-climb time evaluation
 
 scoreDif = [i - j for i, j in zip(hillScore, bfsScore)]			# array with the difference between new score and original score
+geneDif = [i - j for i, j in zip(geneScore, bfsScore)]			# 
 
 aTime = [n.evalTime for n in aStar]								# array with the evaluation times for A*, original board
 aTimeHill = [n.evalTime for n in aStarHill]						# array with the evaluation times for A*, hill-climb board
@@ -137,7 +147,7 @@ def plotHill():
 	plt.ylabel("Score")
 	plt.title("New score")
 	
-	plt.suptitle("Data for " + str(iterations) + " iterations")
+	plt.suptitle("Data for " + str(iterations) + " hill-climbing iterations")
 	
 	plt.show()
 	plt.clf()
@@ -237,13 +247,60 @@ def plotCompAverage():
 	
 	plt.show()
 	plt.clf()
+	
+
+
+def plotGene():
+	plt.subplot(221)
+	i = 0
+	while i < int(numberPer):
+		plt.plot(sizeArray[i::int(numberPer)], geneTime[i::int(numberPer)], color = colors[i], marker = markers[i], linestyle = 'none')
+		i += 1
+	plt.xlabel("Size of board, 'n'")
+	plt.ylabel("Time (ms)")
+	plt.title("Time for each set of iterations")
+	
+	# Plot the increase in difficulty
+	plt.subplot(222)
+	i = 0
+	while i < int(numberPer):
+		plt.plot(sizeArray[i::int(numberPer)], geneDif[i::int(numberPer)], color = colors[i], marker = markers[i], linestyle = 'none')
+		i += 1
+	plt.xlabel("Size of board, 'n'")
+	plt.ylabel("Score")
+	plt.title("Increase in score")
+	
+	# Plot the original score
+	plt.subplot(223)
+	i = 0
+	while i < int(numberPer):
+		plt.plot(sizeArray[i::int(numberPer)], bfsScore[i::int(numberPer)], color = colors[i], marker = markers[i], linestyle = 'none')
+		i += 1
+	plt.xlabel("Size of board, 'n'")
+	plt.ylabel("Score")
+	plt.title("Original score")
+	
+	# Plot the ending score
+	plt.subplot(224)
+	i = 0
+	while i < int(numberPer):
+		plt.plot(sizeArray[i::int(numberPer)], geneScore[i::int(numberPer)], color = colors[i], marker = markers[i], linestyle = 'none')
+		i += 1
+	plt.xlabel("Size of board, 'n'")
+	plt.ylabel("Score")
+	plt.title("New score")
+	
+	plt.suptitle("Data for " + str(iterations) + " genetic algorithm iterations")
+	
+	plt.show()
+	plt.clf()
 
 
 
 # Create loop for user input
 while True:
 	print()
-	userInput = input("Type '1' for BFS data, '2' for hill-climbing data, '3' to compare BFS to A*, 'q' to exit. ")
+	userInput = input("Type '1' for BFS data, '2' for hill-climbing data, '3' to compare BFS to A*, '4' for genetic data, 'q' to exit. ")
 	
 	if userInput == '1':
 		print("> BFS data displayed.")
@@ -257,11 +314,17 @@ while True:
 		print("> Scores: " + str(hillScore))
 		plotHill()
 	
-	if userInput == '3':
+	elif userInput == '3':
 		print("> BFS vs A* displayed.")
 		#print("> BFS time; " + str(bfsTime))
 		#print("> A* time: " + str(aTime))
 		plotComp()
+	
+	elif userInput == '4':
+		print("> Genetic algorithm data displayed.")
+		print("> Time; " + str(geneTime))
+		print("> Scores: " + str(geneScore))
+		plotGene()
 	
 	elif userInput == 'q':
 		break

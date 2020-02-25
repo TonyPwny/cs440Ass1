@@ -3,252 +3,265 @@
 
 import AStarEval
 import random
+import copy
+import board
+import evaluate
+import time
 
+class Genetic:
+	def __init__(self, board):
+		self.puzzle = copy.deepcopy(board)
+		
+	def run(self, eval, iterations):
+		start = time.time()
+		
+		n_max = self.puzzle.boardSize - 1
+		puzzle_2 = copy.deepcopy(self.puzzle)
+		puzzle_3 = copy.deepcopy(self.puzzle)
+		puzzle_4 = copy.deepcopy(self.puzzle)
+		count = 1
 
-iterations = int(userInputHC)
+		while iterations > 0:
 
-n_max = puzzle.boardSize - 1
-puzzle_2 = copy.deepcopy(puzzle)
-puzzle_3 = copy.deepcopy(puzzle)
-puzzle_4 = copy.deepcopy(puzzle)
-count = 1
+			#print('Iteration: ' + str(count))
 
-while iterations > 0:
+			AStarAgent1 = AStarEval.AStarEval(self.puzzle.boardBuilt, self.puzzle.boardSize)
 
-	#print('Iteration: ' + str(count))
+			if AStarAgent1.value < 0:
 
-	AStarAgent1 = AStarEval.AStarEval(puzzle.boardBuilt, puzzle.boardSize)
+				#print("\nUsing tweaked general hill-climbing mutation for UNSOLVABLE puzzle.\n")
+				i_r = random.randint(0, n_max)
 
-	if AStarAgent1.value < 0:
+				if i_r == n_max:
 
-		#print("\nUsing tweaked general hill-climbing mutation for UNSOLVABLE puzzle.\n")
-		i_r = random.randint(0, n_max)
+					j_r = random.randint(0, (n_max - 1))
+				else:
 
-		if i_r == n_max:
+					j_r = random.randint(0, n_max)
 
-			j_r = random.randint(0, (n_max - 1))
-		else:
+				newMove = board.valid(i_r, j_r, self.puzzle.boardSize)
+				same = True
 
-			j_r = random.randint(0, n_max)
+				while same:
 
-		newMove = board.valid(i_r, j_r, puzzle.boardSize)
-		same = True
+					if newMove != puzzle_2.boardBuilt[i_r][j_r]:
 
-		while same:
+						puzzle_2.boardBuilt[i_r][j_r] = newMove
+						same = False
+						#print("Successfully generated a different random.")
+					else:
 
-			if newMove != puzzle_2.boardBuilt[i_r][j_r]:
+						newMove = board.valid(i_r, j_r, self.puzzle.boardSize)
+						#print("Same random, generating another...")
 
-				puzzle_2.boardBuilt[i_r][j_r] = newMove
-				same = False
-				#print("Successfully generated a different random.")
+				AStarAgent2 = AStarEval.AStarEval(puzzle_2.boardBuilt, self.puzzle.boardSize)
+
+				if AStarAgent2.value >= AStarAgent1.value:
+
+					self.puzzle = copy.deepcopy(puzzle_2)
+					AStarAgent = AStarEval.AStarEval(self.puzzle.boardBuilt, self.puzzle.boardSize)
+					#print('General hill-climibing mutation better than/as good as original')
+				else:
+
+					AStarAgent = AStarEval.AStarEval(self.puzzle.boardBuilt, self.puzzle.boardSize)
+					#print('Original puzzle better than general hill-climbing mutation on the BFS shortest path')
+
 			else:
 
-				newMove = board.valid(i_r, j_r, puzzle.boardSize)
-				#print("Same random, generating another...")
+				if eval.shortestPath != AStarAgent1.shortestPath:
 
-		AStarAgent2 = AStarEval.AStarEval(puzzle_2.boardBuilt, puzzle.boardSize)
-
-		if AStarAgent2.value >= AStarAgent1.value:
-
-			puzzle = copy.deepcopy(puzzle_2)
-			AStarAgent = AStarEval.AStarEval(puzzle.boardBuilt, puzzle.boardSize)
-			#print('General hill-climibing mutation better than/as good as original')
-		else:
-
-			AStarAgent = AStarEval.AStarEval(puzzle.boardBuilt, puzzle.boardSize)
-			#print('Original puzzle better than general hill-climbing mutation on the BFS shortest path')
-
-	else:
-
-		if eval.shortestPath != AStarAgent1.shortestPath:
-
-			#print("\nAt least 2 shortest paths detected. Targeting both and comparing results:\n")
-			i_r, j_r = random.choice(eval.shortestPath[1:])
-			#print("Random (i, j) in BFS shortest path: (" + str(i_r) + ", " + str(j_r) + ")")
-			i_ra, j_ra = random.choice(AStarAgent1.shortestPath[1:])
-			same = True
-
-			while same:
-
-				if i_r == i_ra and j_r == j_ra:
-
+					#print("\nAt least 2 shortest paths detected. Targeting both and comparing results:\n")
+					i_r, j_r = random.choice(eval.shortestPath[1:])
+					#print("Random (i, j) in BFS shortest path: (" + str(i_r) + ", " + str(j_r) + ")")
 					i_ra, j_ra = random.choice(AStarAgent1.shortestPath[1:])
-				else:
+					same = True
 
-					#print("Random (i, j) in A* shortest path: (" + str(i_ra) + ", " + str(j_ra) + ")")
-					same = False
+					while same:
 
-			newMove = board.valid(i_r, j_r, puzzle.boardSize)
-			newMove_a = board.valid(i_ra, j_ra, puzzle.boardSize)
-			same = True
+						if i_r == i_ra and j_r == j_ra:
 
-			while same:
+							i_ra, j_ra = random.choice(AStarAgent1.shortestPath[1:])
+						else:
 
-				if newMove != puzzle_2.boardBuilt[i_r][j_r]:
+							#print("Random (i, j) in A* shortest path: (" + str(i_ra) + ", " + str(j_ra) + ")")
+							same = False
 
-					puzzle_2.boardBuilt[i_r][j_r] = newMove
-					same = False
-					#print("Successfully generated a different random.")
-				else:
+					newMove = board.valid(i_r, j_r, self.puzzle.boardSize)
+					newMove_a = board.valid(i_ra, j_ra, self.puzzle.boardSize)
+					same = True
 
-					newMove = board.valid(i_r, j_r, puzzle.boardSize)
-					#print("Same random, generating another...")
+					while same:
 
-			same = True
+						if newMove != puzzle_2.boardBuilt[i_r][j_r]:
 
-			while same:
+							puzzle_2.boardBuilt[i_r][j_r] = newMove
+							same = False
+							#print("Successfully generated a different random.")
+						else:
 
-				if newMove_a != puzzle_3.boardBuilt[i_ra][j_ra]:
+							newMove = board.valid(i_r, j_r, self.puzzle.boardSize)
+							#print("Same random, generating another...")
 
-					puzzle_3.boardBuilt[i_ra][j_ra] = newMove_a
-					same = False
-					#print("Successfully generated a different random.")
-				else:
+					same = True
 
-					newMove_a = board.valid(i_ra, j_ra, puzzle.boardSize)
-					#print("Same random, generating another...")
+					while same:
 
-			puzzle_4.boardBuilt[i_r][j_r] = newMove
-			puzzle_4.boardBuilt[i_ra][j_ra] = newMove_a
-			AStarAgent2 = AStarEval.AStarEval(puzzle_2.boardBuilt, puzzle.boardSize)
-			AStarAgent3 = AStarEval.AStarEval(puzzle_3.boardBuilt, puzzle.boardSize)
-			AStarAgent4 = AStarEval.AStarEval(puzzle_4.boardBuilt, puzzle.boardSize)
+						if newMove_a != puzzle_3.boardBuilt[i_ra][j_ra]:
 
-			if AStarAgent4.value >= AStarAgent3.value:
+							puzzle_3.boardBuilt[i_ra][j_ra] = newMove_a
+							same = False
+							#print("Successfully generated a different random.")
+						else:
 
-				#print('Genetic mutation on both shortest paths better than/as good as genetic mutation on the A* shortest path')
+							newMove_a = board.valid(i_ra, j_ra, self.puzzle.boardSize)
+							#print("Same random, generating another...")
 
-				if AStarAgent4.value >= AStarAgent2.value:
+					puzzle_4.boardBuilt[i_r][j_r] = newMove
+					puzzle_4.boardBuilt[i_ra][j_ra] = newMove_a
+					AStarAgent2 = AStarEval.AStarEval(puzzle_2.boardBuilt, self.puzzle.boardSize)
+					AStarAgent3 = AStarEval.AStarEval(puzzle_3.boardBuilt, self.puzzle.boardSize)
+					AStarAgent4 = AStarEval.AStarEval(puzzle_4.boardBuilt, self.puzzle.boardSize)
 
-					#print('Genetic mutation on both shortest paths better than/as good as genetic mutation on the BFS shortest path')
+					if AStarAgent4.value >= AStarAgent3.value:
 
-					if AStarAgent4 >= AStarAgent1.value:
+						#print('Genetic mutation on both shortest paths better than/as good as genetic mutation on the A* shortest path')
 
-						puzzle = copy.deepcopy(puzzle_4)
-						AStarAgent = AStarEval.AStarEval(puzzle.boardBuilt, puzzle.boardSize)
-						#print('Genetic mutation on both shortest paths better than/as good as original')
+						if AStarAgent4.value >= AStarAgent2.value:
+
+							#print('Genetic mutation on both shortest paths better than/as good as genetic mutation on the BFS shortest path')
+
+							if AStarAgent4.value >= AStarAgent1.value:
+
+								self.puzzle = copy.deepcopy(puzzle_4)
+								AStarAgent = AStarEval.AStarEval(self.puzzle.boardBuilt, self.puzzle.boardSize)
+								#print('Genetic mutation on both shortest paths better than/as good as original')
+							else:
+
+								AStarAgent = AStarEval.AStarEval(self.puzzle.boardBuilt, self.puzzle.boardSize)
+								#print('Original puzzle better than genetic mutation on the 2 shortest paths')
+						else:
+
+							#print('Genetic mutation on the BFS shortest path better than genetic mutation on both shortest paths')
+
+							if AStarAgent2.value >= AStarAgent1.value:
+
+								self.puzzle = copy.deepcopy(puzzle_2)
+								AStarAgent = AStarEval.AStarEval(self.puzzle.boardBuilt, self.puzzle.boardSize)
+								#print('Genetic mutation on the BFS shortest path better than/as good as original')
+							else:
+
+								AStarAgent = AStarEval.AStarEval(self.puzzle.boardBuilt, self.puzzle.boardSize)
+								#print('Original puzzle better than genetic mutation on the BFS shortest path')
 					else:
 
-						AStarAgent = AStarEval.AStarEval(puzzle.boardBuilt, puzzle.boardSize)
-						#print('Original puzzle better than genetic mutation on the 2 shortest paths')
+						#print('Genetic mutation on the A* shortest path better than genetic mutation on both shortest paths')
+
+						if AStarAgent3.value >= AStarAgent2.value:
+
+							#print('Genetic mutation on the A* shortest path better than/as good as genetic mutation on the BFS shortest path')
+
+							if AStarAgent3.value >= AStarAgent1.value:
+
+								self.puzzle = copy.deepcopy(puzzle_3)
+								AStarAgent = AStarEval.AStarEval(self.puzzle.boardBuilt, self.puzzle.boardSize)
+								#print('Genetic mutation on the A* shortest path better than/as good as original')
+							else:
+
+								AStarAgent = AStarEval.AStarEval(self.puzzle.boardBuilt, self.puzzle.boardSize)
+								#print('Original puzzle better than genetic mutation on the A* shortest path')
+						else:
+
+							#print('Genetic mutation on the BFS shortest path better than genetic mutation on the A* shortest path')
+
+							if AStarAgent2.value >= AStarAgent1.value:
+
+								self.puzzle = copy.deepcopy(puzzle_2)
+								AStarAgent = AStarEval.AStarEval(self.puzzle.boardBuilt, self.puzzle.boardSize)
+								#print('Genetic mutation on the BFS shortest path better than/as good as original')
+							else:
+
+								AStarAgent = AStarEval.AStarEval(self.puzzle.boardBuilt, self.puzzle.boardSize)
+								#print('Original puzzle better than genetic mutation on the BFS shortest path')
 				else:
 
-					#print('Genetic mutation on the BFS shortest path better than genetic mutation on both shortest paths')
+					#print("\nOnly one shortest paths detected. Targeting it and comparing results:\n")
+					i_r, j_r = random.choice(AStarAgent1.shortestPath[1:])
+					newMove = board.valid(i_r, j_r, self.puzzle.boardSize)
+					same = True
+
+					while same:
+
+						if newMove != puzzle_2.boardBuilt[i_r][j_r]:
+
+							puzzle_2.boardBuilt[i_r][j_r] = newMove
+							same = False
+							#print("Successfully generated a different random.")
+						else:
+
+							newMove = board.valid(i_r, j_r, self.puzzle.boardSize)
+							#print("Same random, generating another...")
+
+					AStarAgent2 = AStarEval.AStarEval(puzzle_2.boardBuilt, self.puzzle.boardSize)
+
+					i_r2 = random.randint(0, n_max)
+
+					if i_r2 == n_max:
+
+						j_r2 = random.randint(0, (n_max - 1))
+					else:
+
+						j_r2 = random.randint(0, n_max)
+
+					newMove = board.valid(i_r2, j_r2, self.puzzle.boardSize)
+					same = True
+
+					while same:
+
+						if newMove != puzzle_3.boardBuilt[i_r2][j_r2]:
+
+							puzzle_3.boardBuilt[i_r2][j_r2] = newMove
+							same = False
+							#print("Successfully generated a different random.")
+						else:
+
+							newMove = board.valid(i_r2, j_r2, self.puzzle.boardSize)
+							#print("Same random, generating another...")
+
+					AStarAgent3 = AStarEval.AStarEval(puzzle_3.boardBuilt, self.puzzle.boardSize)
 
 					if AStarAgent2.value >= AStarAgent1.value:
 
-						puzzle = copy.deepcopy(puzzle_2)
-						AStarAgent = AStarEval.AStarEval(puzzle.boardBuilt, puzzle.boardSize)
-						#print('Genetic mutation on the BFS shortest path better than/as good as original')
+						#print('Targeted hill-climbing mutation better than/as good as original')
+
+						if AStarAgent3.value > AStarAgent2.value:
+
+							self.puzzle = copy.deepcopy(puzzle_3)
+							AStarAgent = AStarEval.AStarEval(self.puzzle.boardBuilt, self.puzzle.boardSize)
+							#print('General hill-climbing mutation better than targeted')
+						else:
+
+							self.puzzle = copy.deepcopy(puzzle_2)
+							AStarAgent = AStarEval.AStarEval(self.puzzle.boardBuilt, self.puzzle.boardSize)
+							#print('Targeted hill-climbing mutation better than general')
 					else:
 
-						AStarAgent = AStarEval.AStarEval(puzzle.boardBuilt, puzzle.boardSize)
-						#print('Original puzzle better than genetic mutation on the BFS shortest path')
-			else:
+						#print('Original self.puzzle better than targeted hill-climbing mutation')
 
-				#print('Genetic mutation on the A* shortest path better than genetic mutation on both shortest paths')
+						if AStarAgent3.value >= AStarAgent1.value:
 
-				if AStarAgent3.value >= AStarAgent2.value:
+							self.puzzle = copy.deepcopy(puzzle_3)
+							AStarAgent = AStarEval.AStarEval(self.puzzle.boardBuilt, self.puzzle.boardSize)
+							#print('General hill-climbing mutation better than/as good as original')
+						else:
 
-					#print('Genetic mutation on the A* shortest path better than/as good as genetic mutation on the BFS shortest path')
+							AStarAgent = AStarEval.AStarEval(self.puzzle.boardBuilt, self.puzzle.boardSize)
+							#print('Original self.puzzle better than general hill-climbing mutation')
 
-					if AStarAgent3.value >= AStarAgent1.value:
-
-						puzzle = copy.deepcopy(puzzle_3)
-						AStarAgent = AStarEval.AStarEval(puzzle.boardBuilt, puzzle.boardSize)
-						#print('Genetic mutation on the A* shortest path better than/as good as original')
-					else:
-
-						AStarAgent = AStarEval.AStarEval(puzzle.boardBuilt, puzzle.boardSize)
-						#print('Original puzzle better than genetic mutation on the A* shortest path')
-				else:
-
-					#print('Genetic mutation on the BFS shortest path better than genetic mutation on the A* shortest path')
-
-					if AStarAgent2.value >= AStarAgent1.value:
-
-						puzzle = copy.deepcopy(puzzle_2)
-						AStarAgent = AStarEval.AStarEval(puzzle.boardBuilt, puzzle.boardSize)
-						#print('Genetic mutation on the BFS shortest path better than/as good as original')
-					else:
-
-						AStarAgent = AStarEval.AStarEval(puzzle.boardBuilt, puzzle.boardSize)
-						#print('Original puzzle better than genetic mutation on the BFS shortest path')
-		else:
-
-			#print("\nOnly one shortest paths detected. Targeting it and comparing results:\n")
-			i_r, j_r = random.choice(AStarAgent1.shortestPath[1:])
-			newMove = board.valid(i_r, j_r, puzzle.boardSize)
-			same = True
-
-			while same:
-
-				if newMove != puzzle_2.boardBuilt[i_r][j_r]:
-
-					puzzle_2.boardBuilt[i_r][j_r] = newMove
-					same = False
-					#print("Successfully generated a different random.")
-				else:
-
-					newMove = board.valid(i_r, j_r, puzzle.boardSize)
-					#print("Same random, generating another...")
-
-			AStarAgent2 = AStarEval.AStarEval(puzzle_2.boardBuilt, puzzle.boardSize)
-
-			i_r2 = random.randint(0, n_max)
-
-			if i_r2 == n_max:
-
-				j_r2 = random.randint(0, (n_max - 1))
-			else:
-
-				j_r2 = random.randint(0, n_max)
-
-			newMove = board.valid(i_r2, j_r2, puzzle.boardSize)
-			same = True
-
-			while same:
-
-				if newMove != puzzle_3.boardBuilt[i_r2][j_r2]:
-
-					puzzle_3.boardBuilt[i_r2][j_r2] = newMove
-					same = False
-					#print("Successfully generated a different random.")
-				else:
-
-					newMove = board.valid(i_r2, j_r2, puzzle.boardSize)
-					#print("Same random, generating another...")
-
-			AStarAgent3 = AStarEval.AStarEval(puzzle_3.boardBuilt, puzzle.boardSize)
-
-			if AStarAgent2.value >= AStarAgent1.value:
-
-				#print('Targeted hill-climbing mutation better than/as good as original')
-
-				if AStarAgent3.value > AStarAgent2.value:
-
-					puzzle = copy.deepcopy(puzzle_3)
-					AStarAgent = AStarEval.AStarEval(puzzle.boardBuilt, puzzle.boardSize)
-					#print('General hill-climbing mutation better than targeted')
-				else:
-
-					puzzle = copy.deepcopy(puzzle_2)
-					AStarAgent = AStarEval.AStarEval(puzzle.boardBuilt, puzzle.boardSize)
-					#print('Targeted hill-climbing mutation better than general')
-			else:
-
-				#print('Original puzzle better than targeted hill-climbing mutation')
-
-				if AStarAgent3.value >= AStarAgent1.value:
-
-					puzzle = copy.deepcopy(puzzle_3)
-					AStarAgent = AStarEval.AStarEval(puzzle.boardBuilt, puzzle.boardSize)
-					#print('General hill-climbing mutation better than/as good as original')
-				else:
-
-					AStarAgent = AStarEval.AStarEval(puzzle.boardBuilt, puzzle.boardSize)
-					#print('Original puzzle better than general hill-climbing mutation')
-
-	eval = evaluate.evaluate(puzzle.boardBuilt, puzzle.boardSize)
-	count += 1
-	iterations -= 1
+			eval = evaluate.evaluate(self.puzzle.boardBuilt, self.puzzle.boardSize)
+			count += 1
+			iterations -= 1
+		self.score = eval.value
+		
+		end = time.time()
+		
+		self.evalTime = (end - start) * 1000
