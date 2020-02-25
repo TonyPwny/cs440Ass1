@@ -98,7 +98,7 @@ def mainAT():
 
 		elif userInput == '5':
 
-			userInputHC = raw_input("\nEnter number of iterations to run a hill climbing mutation: ")
+			userInputHC = raw_input("\nEnter number of iterations to run a hill-climbing mutation: ")
 
 			iterations = int(userInputHC)
 
@@ -124,28 +124,28 @@ def mainAT():
 
 				eval2 = evaluate.evaluate(newPuzzle.boardBuilt, puzzle.boardSize)
 
-				if eval2.value > eval1.value:
+				if eval2.value >= eval1.value:
 
-					print('Hill Climbing mutation better')
+					print('Hill-climbing mutation better or as good')
 					puzzle = copy.deepcopy(newPuzzle)
 					eval = evaluate.evaluate(puzzle.boardBuilt, puzzle.boardSize)
 				else:
 
-					print('Original puzzle better or as good')
+					print('Original puzzle better')
 					eval = evaluate.evaluate(puzzle.boardBuilt, puzzle.boardSize)
 
 				count += 1
 				iterations -= 1
 
-			print("\n> HillClimb mutation.\n")
+			print("\n> Hill-climbing mutation.\n")
 
 		elif userInput == '6':
 
 # Genetic Algorithm, forked from Hill-Climbing
 
-			userInputHC = raw_input("\nEnter number of iterations to run a genetic mutation: ")
+			userInputGA = raw_input("\nEnter number of iterations to run a genetic mutation: ")
 
-			iterations = int(userInputHC)
+			iterations = int(userInputGA)
 
 			n_max = puzzle.boardSize - 1
 			puzzle_2 = copy.deepcopy(puzzle)
@@ -161,7 +161,7 @@ def mainAT():
 
 				if AStarAgent1.value < 0:
 
-					print("\nUsing tweaked general hill-climbing mutation for UNSOLVABLE puzzle.\n")
+					print("\nUsing a tweaked general hill-climbing mutation for UNSOLVABLE puzzle.\n")
 					i_r = random.randint(0, n_max)
 
 					if i_r == n_max:
@@ -196,7 +196,7 @@ def mainAT():
 					else:
 
 						AStarAgent = AStarEval.AStarEval(puzzle.boardBuilt, puzzle.boardSize)
-						print('Original puzzle better than general hill-climbing mutation on the BFS shortest path')
+						print('Original puzzle better than general hill-climbing mutation')
 
 				else:
 
@@ -365,11 +365,11 @@ def mainAT():
 
 							print('Targeted hill-climbing mutation better than/as good as original')
 
-							if AStarAgent3.value > AStarAgent2.value:
+							if AStarAgent3.value >= AStarAgent2.value:
 
 								puzzle = copy.deepcopy(puzzle_3)
 								AStarAgent = AStarEval.AStarEval(puzzle.boardBuilt, puzzle.boardSize)
-								print('General hill-climbing mutation better than targeted')
+								print('General hill-climbing mutation better than/as good as targeted')
 							else:
 
 								puzzle = copy.deepcopy(puzzle_2)
